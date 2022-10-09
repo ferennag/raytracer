@@ -1,0 +1,7 @@
+build
+*.o
+test/tests
+.vscode
+.idea
+*.iml
+
