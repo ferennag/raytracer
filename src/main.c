@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "tuple.h"
-#include "matrix.h"
-#include "data/list.h"
-#include "data/hashmap.h"
+#include "graphics/graphics.h"
 
 int main(int argc, char *argv[]) {
+    graphics_init(1024, 768);
+    graphics_run();
+    graphics_shutdown();
     return 0;
 }
