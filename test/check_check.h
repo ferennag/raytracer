@@ -7,5 +7,6 @@ Suite *tuple_suite(void);
 Suite *matrix_suite(void);
 Suite *float_suite(void);
 Suite *ray_suite(void);
+Suite *intersection_suite(void);
 
 #endif

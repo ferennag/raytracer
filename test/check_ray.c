@@ -57,7 +57,7 @@ START_TEST (ray_intersect_sphere_cross) {
     ck_assert_float_eq_tol(second->value, 6.0, FLOAT_TOLERANCE);
     ck_assert_ptr_eq(first->object, &sphere);
     ck_assert_ptr_eq(second->object, &sphere);
-    Intersections_destroy(intersected);
+    Intersections_destroy(&intersected);
 }
 END_TEST
 
@@ -76,7 +76,7 @@ START_TEST (ray_intersect_sphere_tangent) {
     ck_assert_float_eq_tol(second->value, 5.0, FLOAT_TOLERANCE);
     ck_assert_ptr_eq(first->object, &sphere);
     ck_assert_ptr_eq(second->object, &sphere);
-    Intersections_destroy(intersected);
+    Intersections_destroy(&intersected);
 }
 END_TEST
 
@@ -88,7 +88,7 @@ START_TEST (ray_miss_sphere) {
 
     Intersections *intersected = Ray_intersect(&ray, &sphere);
     ck_assert_int_eq(intersected->cnt, 0);
-    Intersections_destroy(intersected);
+    Intersections_destroy(&intersected);
 }
 END_TEST
 
@@ -107,7 +107,7 @@ START_TEST (ray_intersect_from_center_of_sphere) {
     ck_assert_float_eq_tol(second->value, 1.0, FLOAT_TOLERANCE);
     ck_assert_ptr_eq(first->object, &sphere);
     ck_assert_ptr_eq(second->object, &sphere);
-    Intersections_destroy(intersected);
+    Intersections_destroy(&intersected);
 }
 END_TEST
 
@@ -126,7 +126,7 @@ START_TEST (ray_intersect_from_behind_of_sphere) {
     ck_assert_float_eq_tol(second->value, -4.0, FLOAT_TOLERANCE);
     ck_assert_ptr_eq(first->object, &sphere);
 
-    Intersections_destroy(intersected);
+    Intersections_destroy(&intersected);
 }
 END_TEST
 

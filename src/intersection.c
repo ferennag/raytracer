@@ -17,10 +17,10 @@ Intersections *Intersections_create() {
     result->cnt = 0;
     return result;
 }
-void Intersections_destroy(Intersections *intersections) {
-    List_destroy(intersections->list);
-    free(intersections);
-    intersections = NULL;
+void Intersections_destroy(Intersections **intersections) {
+    List_destroy((*intersections)->list);
+    free(*intersections);
+    *intersections = NULL;
 }
 
 void Intersections_add(Intersections *intersections, float value, const void *object) {

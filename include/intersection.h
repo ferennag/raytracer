@@ -15,7 +15,7 @@ typedef struct Intersections {
 
 Intersection *Intersection_create(float value, const void *object);
 Intersections *Intersections_create();
-void Intersections_destroy(Intersections *intersections);
+void Intersections_destroy(Intersections **intersections);
 void Intersections_add(Intersections *intersections, float value, const void *object);
 
 #endif
