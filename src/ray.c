@@ -1,7 +1,9 @@
 #include <assert.h>
+#include <stdlib.h>
 #include <math.h>
 #include "ray.h"
 #include "tuple.h"
+#include "matrix.h"
 #include "sphere.h"
 #include "intersection.h"
 
@@ -18,10 +20,12 @@ Tuple Ray_position(const Ray *ray, float t) {
 }
 
 Intersections *Ray_intersect(const Ray *ray, const Sphere *sphere) {
-    Tuple sphere_to_ray = Tuple_sub(ray->origin, sphere->origin);
+    Matrix inversedTransform = Matrix_inverse(&sphere->transform);
+    Ray transformedRay = Ray_transform(ray, &inversedTransform);
+    Tuple sphere_to_ray = Tuple_sub(transformedRay.origin, sphere->origin);
     
-    float a = Tuple_dot(ray->direction, ray->direction);
-    float b = 2 * Tuple_dot(ray->direction, sphere_to_ray);
+    float a = Tuple_dot(transformedRay.direction, transformedRay.direction);
+    float b = 2 * Tuple_dot(transformedRay.direction, sphere_to_ray);
     float c = Tuple_dot(sphere_to_ray, sphere_to_ray) - 1;
 
     float discriminant = powf(b, 2) - 4 * a * c;
@@ -40,4 +44,12 @@ Intersections *Ray_intersect(const Ray *ray, const Sphere *sphere) {
     Intersections_add(result, i2, sphere);
 
     return result;
+}
+
+Ray Ray_transform(const Ray *ray, const Matrix *matrix) {
+    assert(ray != NULL && matrix != NULL);
+
+    Tuple new_origin = Matrix_tmul(matrix, &ray->origin);
+    Tuple new_direction = Matrix_tmul(matrix, &ray->direction);
+    return Ray_create(new_origin, new_direction);
 }

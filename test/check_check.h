@@ -8,5 +8,6 @@ Suite *matrix_suite(void);
 Suite *float_suite(void);
 Suite *ray_suite(void);
 Suite *intersection_suite(void);
+Suite *sphere_suite(void);
 
 #endif

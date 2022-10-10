@@ -2,6 +2,7 @@
 #define RAY_H
 
 #include "tuple.h"
+#include "matrix.h"
 #include "sphere.h"
 #include "intersection.h"
 
@@ -13,5 +14,6 @@ typedef struct Ray {
 Ray Ray_create(Tuple origin, Tuple direction);
 Tuple Ray_position(const Ray *ray, float t);
 Intersections *Ray_intersect(const Ray *ray, const Sphere *sphere);
+Ray Ray_transform(const Ray *ray, const Matrix *matrix);
 
 #endif

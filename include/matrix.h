@@ -35,18 +35,18 @@ Matrix Matrix_identity4();
 
 Matrix Matrix_create(float *values, unsigned int size);
 
-bool Matrix_eq(Matrix *m1, Matrix *m2);
+bool Matrix_eq(const Matrix *m1, const Matrix *m2);
 Tuple Matrix_tmul(const Matrix *m1, const Tuple *t);
-Matrix Matrix_mul(Matrix *m1, Matrix *m2);
+Matrix Matrix_mul(const Matrix *m1, const Matrix *m2);
 
-Matrix Matrix_transpose(Matrix *m1);
+Matrix Matrix_transpose(const Matrix *m1);
 
-float Matrix_det(Matrix *m1);
+float Matrix_det(const Matrix *m1);
 
-Matrix Matrix_submatrix(Matrix *m1, unsigned int row, unsigned int col);
-float Matrix_cofactor(Matrix *m1, unsigned int row, unsigned int col);
+Matrix Matrix_submatrix(const Matrix *m1, unsigned int row, unsigned int col);
+float Matrix_cofactor(const Matrix *m1, unsigned int row, unsigned int col);
 
-Matrix Matrix_inverse(Matrix *m1);
+Matrix Matrix_inverse(const Matrix *m1);
 
 Matrix Matrix_translation(const float x, const float y, const float z);
 Matrix Matrix_scaling(const float x, const float y, const float z);

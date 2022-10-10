@@ -3,6 +3,7 @@
 #include "check_check.h"
 #include "ray.h"
 #include "tuple.h"
+#include "matrix.h"
 #include "sphere.h"
 #include "util/float.h"
 
@@ -57,6 +58,39 @@ START_TEST (ray_intersect_sphere_cross) {
     ck_assert_float_eq_tol(second->value, 6.0, FLOAT_TOLERANCE);
     ck_assert_ptr_eq(first->object, &sphere);
     ck_assert_ptr_eq(second->object, &sphere);
+    Intersections_destroy(&intersected);
+}
+END_TEST
+
+START_TEST (ray_intersect_scaled_sphere) {
+    Ray ray = Ray_create(Tuple_point(0, 0, -5), Tuple_vector(0, 0, 1));
+    Sphere sphere = Sphere_create();
+    Matrix scaling = Matrix_scaling(2, 2, 2);
+    Sphere_set_transformation(&sphere, &scaling);
+
+    Intersections *intersected = Ray_intersect(&ray, &sphere);
+    ck_assert_int_eq(intersected->cnt, 2);
+
+    Intersection *first = (Intersection *)List_first(intersected->list)->data;
+    Intersection *second = (Intersection *)List_last(intersected->list)->data;
+
+    ck_assert_float_eq_tol(first->value, 3.0, FLOAT_TOLERANCE);
+    ck_assert_float_eq_tol(second->value, 7.0, FLOAT_TOLERANCE);
+    ck_assert_ptr_eq(first->object, &sphere);
+    ck_assert_ptr_eq(second->object, &sphere);
+    Intersections_destroy(&intersected);
+}
+END_TEST
+
+
+START_TEST (ray_intersect_translated_sphere) {
+    Ray ray = Ray_create(Tuple_point(0, 0, -5), Tuple_vector(0, 0, 1));
+    Sphere sphere = Sphere_create();
+    Matrix scaling = Matrix_translation(5, 0, 0);
+    Sphere_set_transformation(&sphere, &scaling);
+
+    Intersections *intersected = Ray_intersect(&ray, &sphere);
+    ck_assert_int_eq(intersected->cnt, 0);
     Intersections_destroy(&intersected);
 }
 END_TEST
@@ -130,6 +164,38 @@ START_TEST (ray_intersect_from_behind_of_sphere) {
 }
 END_TEST
 
+START_TEST (ray_transform_translation) {
+    Tuple origin = Tuple_point(1, 2, 3);
+    Tuple direction = Tuple_vector(0, 1, 0);
+    Ray ray = Ray_create(origin, direction);
+    Matrix translation = Matrix_translation(3, 4 ,5);
+    Ray result = Ray_transform(&ray, &translation);
+
+    Tuple expected_origin = Tuple_point(4, 6, 8);
+    Tuple expected_direction = Tuple_vector(0, 1, 0);
+
+
+    ck_assert(Tuple_eq(&expected_origin, &result.origin));
+    ck_assert(Tuple_eq(&expected_direction, &result.direction));
+}
+END_TEST
+
+START_TEST (ray_transform_scaling) {
+    Tuple origin = Tuple_point(1, 2, 3);
+    Tuple direction = Tuple_vector(0, 1, 0);
+    Ray ray = Ray_create(origin, direction);
+    Matrix translation = Matrix_scaling(2, 3, 4);
+    Ray result = Ray_transform(&ray, &translation);
+
+    Tuple expected_origin = Tuple_point(2, 6, 12);
+    Tuple expected_direction = Tuple_vector(0, 3, 0);
+
+
+    ck_assert_mem_eq(&expected_origin, &result.origin, sizeof(Tuple));
+    ck_assert_mem_eq(&expected_direction, &result.direction, sizeof(Tuple));
+}
+END_TEST
+
 Suite *ray_suite(void)
 {
 	Suite *s;
@@ -142,10 +208,14 @@ Suite *ray_suite(void)
 	tcase_add_test(tc_core, ray_create);
 	tcase_add_test(tc_core, ray_position);
 	tcase_add_test(tc_core, ray_intersect_sphere_cross);
+	tcase_add_test(tc_core, ray_intersect_scaled_sphere);
+	tcase_add_test(tc_core, ray_intersect_translated_sphere);
 	tcase_add_test(tc_core, ray_intersect_sphere_tangent);
 	tcase_add_test(tc_core, ray_miss_sphere);
 	tcase_add_test(tc_core, ray_intersect_from_center_of_sphere);
 	tcase_add_test(tc_core, ray_intersect_from_behind_of_sphere);
+	tcase_add_test(tc_core, ray_transform_translation);
+	tcase_add_test(tc_core, ray_transform_scaling);
 
 	suite_add_tcase(s, tc_core);
 	return s;

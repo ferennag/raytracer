@@ -99,7 +99,7 @@ void Matrix_print(Matrix *m1) {
 }
 
 
-bool Matrix_eq(Matrix *m1, Matrix *m2) {
+bool Matrix_eq(const Matrix *m1, const Matrix *m2) {
     if (NULL == m1 && NULL == m2) {
         return true;
     } else if((NULL == m1 && NULL != m2) || (NULL != m1 && NULL == m2)) {
@@ -120,7 +120,7 @@ bool Matrix_eq(Matrix *m1, Matrix *m2) {
     }
 }
 
-Matrix Matrix_mul(Matrix *m1, Matrix *m2) {
+Matrix Matrix_mul(const Matrix *m1, const Matrix *m2) {
     assert(m1 != NULL && m2 != NULL && m1->size == m2->size);
 
     Matrix result = Matrix_zeroes4();
@@ -155,7 +155,7 @@ Tuple Matrix_tmul(const Matrix *m1, const Tuple *t) {
 }
 
 
-Matrix Matrix_transpose(Matrix *m1) {
+Matrix Matrix_transpose(const Matrix *m1) {
     assert(m1 != NULL);
 
     Matrix result = Matrix_zeroes4();
@@ -170,12 +170,12 @@ Matrix Matrix_transpose(Matrix *m1) {
     return result;
 }
 
-float Matrix_det2(Matrix *m1) {
+float Matrix_det2(const Matrix *m1) {
     assert(m1 != NULL && 2 == m1->size);
     return m1->m[0][0] * m1->m[1][1] - m1->m[0][1] * m1->m[1][0];
 }
 
-float Matrix_detN(Matrix *m1) {
+float Matrix_detN(const Matrix *m1) {
     assert(m1 != NULL && m1->size > 2);
 
     float det = 0;
@@ -188,7 +188,7 @@ float Matrix_detN(Matrix *m1) {
     return det;
 }
 
-float Matrix_det(Matrix *m1) {
+float Matrix_det(const Matrix *m1) {
     assert(NULL != m1);
 
     if(m1->size == 2) {
@@ -198,7 +198,7 @@ float Matrix_det(Matrix *m1) {
     }
 }
 
-Matrix Matrix_submatrix(Matrix *m1, unsigned int row, unsigned int col) {
+Matrix Matrix_submatrix(const Matrix *m1, unsigned int row, unsigned int col) {
     assert(NULL != m1 && 2 < m1->size && row <= m1->size && col <= m1->size);
 
     Matrix result = Matrix_zeroes4();
@@ -225,7 +225,7 @@ Matrix Matrix_submatrix(Matrix *m1, unsigned int row, unsigned int col) {
     return result;
 }
 
-float Matrix_cofactor(Matrix *m1, unsigned int row, unsigned int col) {
+float Matrix_cofactor(const Matrix *m1, unsigned int row, unsigned int col) {
     assert(NULL != m1);
 
     Matrix submatrix = Matrix_submatrix(m1, row, col);
@@ -237,7 +237,7 @@ float Matrix_cofactor(Matrix *m1, unsigned int row, unsigned int col) {
     }
 }
 
-Matrix Matrix_inverse(Matrix *m1) {
+Matrix Matrix_inverse(const Matrix *m1) {
     float det = Matrix_det(m1);
 
     // The determinant is 0. It is non-invertible

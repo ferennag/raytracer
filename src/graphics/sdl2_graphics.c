@@ -42,8 +42,15 @@ void graphics_shutdown() {
     SDL_Quit();
 }
 
-void graphics_run() {
+void graphics_run(void (*update_callback)(SDL_Renderer *)) {
     bool should_run = true;
+
+    // Only call it once
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+    SDL_RenderClear(renderer);
+    update_callback(renderer);
+    SDL_RenderPresent(renderer);
+
     while(should_run) {
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
@@ -52,11 +59,6 @@ void graphics_run() {
                 continue;
             }
         }
-        
-
-        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
-        SDL_Delay(1000);
+        SDL_Delay(50);
     }
 }

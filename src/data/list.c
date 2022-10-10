@@ -92,6 +92,21 @@ void List_insert(List *list, void *data) {
     list->head->next = newnode;
 }
 
+void List_insert_before(List *list, Node *node, void *data) {
+    Node *newnode = Node_empty();
+    newnode->data = data;
+
+    // Insert before the node
+    newnode->prev = node->prev;
+    newnode->next = node;
+
+    // Update the previous first item
+    node->prev->next = newnode;
+
+    // Update the head to point to the new node
+    node->prev = newnode;
+}
+
 void List_forEach(List *list, void (*f)(void *)) {
     if(list == NULL) {
         return;
@@ -153,7 +168,40 @@ Node *List_findFirst(List *list, const void *object, int (*cmp)(const void *, co
         if(is_eq == 0) {
             return it;
         }
+        it = it->next;
     }
     
     return NULL;
+}
+
+Node *List_findFirstBy(List *list, bool (*cmp)(const void *)) {
+    if(list == NULL || list->head->next == list->tail) {
+        return NULL;
+    }
+
+    Node *it = list->head->next;
+    while(it != list->tail) {
+        if((*cmp)(it->data)) {
+            return it;
+        }
+        it = it->next;
+    }
+    
+    return NULL;
+}
+
+Node *List_first(List *list) {
+    if(list->head->next != list->tail) {
+        return list->head->next;
+    } else {
+        return NULL;
+    }
+}
+
+Node *List_last(List *list) {
+    if(list->tail->prev != list->head) {
+        return list->tail->prev;
+    } else {
+        return NULL;
+    }
 }
