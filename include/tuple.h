@@ -12,7 +12,9 @@ typedef struct Tuple {
 
 Tuple Tuple_create(float x, float y, float z, float w);
 Tuple Tuple_point(float x, float y, float z);
+bool Tuple_ispoint(const Tuple *t);
 Tuple Tuple_vector(float x, float y, float z);
+bool Tuple_isvector(const Tuple *t);
 Tuple Tuple_color(float red, float green, float blue);
 void Tuple_as_array(Tuple t, float *array);
 bool Tuple_eq(const Tuple *t1, const Tuple *t2);

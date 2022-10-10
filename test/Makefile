@@ -5,7 +5,7 @@ TARGET=tests
 MAIN_OBJECTS=$(filter-out ../build/src/main.o, $(wildcard ../build/src/*.o)) $(wildcard ../build/src/**/*.o)
 
 CC=gcc
-CHECK_CFLAGS=-Wall -pedantic --std=c99 -I$(INCLUDEDIR)
+CHECK_CFLAGS=-Wall -pedantic --std=c99 -ggdb -I$(INCLUDEDIR)
 LDFLAGS=-lSDL2 -lSDL2_image -lm -lcheck
 
 .PHONY: all run clean

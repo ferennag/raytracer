@@ -6,5 +6,6 @@
 Suite *tuple_suite(void);
 Suite *matrix_suite(void);
 Suite *float_suite(void);
+Suite *ray_suite(void);
 
 #endif

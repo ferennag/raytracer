@@ -11,12 +11,26 @@ START_TEST (tuple_point) {
 }
 END_TEST
 
+START_TEST (tuple_ispoint) {
+    Tuple vector = Tuple_point(1.0, 2.0, 3.0);
+	ck_assert(!Tuple_isvector(&vector));
+	ck_assert(Tuple_ispoint(&vector));
+}
+END_TEST
+
 START_TEST (tuple_vector) {
     Tuple vector = Tuple_vector(1.0, 2.0, 3.0);
     ck_assert_float_eq(vector.x, 1.0);
     ck_assert_float_eq(vector.y, 2.0);
     ck_assert_float_eq(vector.z, 3.0);
 	ck_assert_float_eq(vector.w, 0.0);
+}
+END_TEST
+
+START_TEST (tuple_isvector) {
+    Tuple vector = Tuple_vector(1.0, 2.0, 3.0);
+	ck_assert(Tuple_isvector(&vector));
+	ck_assert(!Tuple_ispoint(&vector));
 }
 END_TEST
 
@@ -81,6 +95,24 @@ START_TEST (tuple_mul_by_scalar) {
     ck_assert_float_eq(result.y,  -1);
     ck_assert_float_eq(result.z, 2.5);
 	ck_assert_float_eq(result.w, 0.5);
+}
+END_TEST
+
+START_TEST (tuple_mul_by_scalar2) {
+	Tuple p = Tuple_point(2, 3, 4);
+    Tuple t1 = Tuple_vector(1, 0, 0);
+	Tuple result = Tuple_smul(t1, 2.5);
+    ck_assert_float_eq_tol(result.x, 2.5, FLOAT_TOLERANCE);
+    ck_assert_float_eq_tol(result.y,  0, FLOAT_TOLERANCE);
+    ck_assert_float_eq_tol(result.z, 0, FLOAT_TOLERANCE);
+	ck_assert_float_eq_tol(result.w, 0, FLOAT_TOLERANCE);
+
+	Tuple result2 = Tuple_add(p, result);
+
+	ck_assert_float_eq_tol(result2.x, 4.5, FLOAT_TOLERANCE);
+    ck_assert_float_eq_tol(result2.y,  3, FLOAT_TOLERANCE);
+    ck_assert_float_eq_tol(result2.z, 4, FLOAT_TOLERANCE);
+	ck_assert_float_eq_tol(result2.w, 1, FLOAT_TOLERANCE);
 }
 END_TEST
 
@@ -202,13 +234,16 @@ Suite *tuple_suite(void)
 	/* Core test case */
 	tc_core = tcase_create("Core");
 	tcase_add_test(tc_core, tuple_point);
+	tcase_add_test(tc_core, tuple_ispoint);
 	tcase_add_test(tc_core, tuple_vector);
+	tcase_add_test(tc_core, tuple_isvector);
 	tcase_add_test(tc_core, tuple_add_vector);
 	tcase_add_test(tc_core, tuple_add_points);
 	tcase_add_test(tc_core, tuple_sub_points);
 	tcase_add_test(tc_core, tuple_sub_vectors);
 	tcase_add_test(tc_core, tuple_negate);
 	tcase_add_test(tc_core, tuple_mul_by_scalar);
+	tcase_add_test(tc_core, tuple_mul_by_scalar2);
 	tcase_add_test(tc_core, tuple_div_by_scalar);
 	tcase_add_test(tc_core, tuple_magnitude1);
 	tcase_add_test(tc_core, tuple_magnitude2);

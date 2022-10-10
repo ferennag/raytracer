@@ -22,6 +22,14 @@ Tuple Tuple_color(float red, float green, float blue) {
     return Tuple_vector(red, green, blue);
 }
 
+bool Tuple_ispoint(const Tuple *t) {
+    return float_eq(t->w, 1.0);
+}
+
+bool Tuple_isvector(const Tuple *t) {
+    return float_eq(t->w, 0.0);
+}
+
 void Tuple_as_array(Tuple t, float *array) {
     array[0] = t.x;
     array[1] = t.y;
